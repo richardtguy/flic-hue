@@ -7,11 +7,7 @@ Use flic Bluetooth buttons to control Philips hue lights via a Raspberry Pi 3.
 - Verified buttons communicates with the Bluetooth controller on the Raspberry Pi via a server application which serves click events to a client application.  The client queries the hue bridge API to switch lights on or off depending on the click type (single click or hold).  Buttons are associated with groups of lights as defined in a JSON formatted file.
 
 ## Instructions
-- In one terminal, start flic server (as root)
-```
-cd server
-sudo ./flicd -f flic.sqlite3
-```
+- In one terminal, `cd server` and start flic server (as root) `sudo ./flicd -f flic.sqlite3`
 
 - To connect new buttons, in another terminal, `cd simpleclient`, compile it with `make` and run with `./simpleclient localhost`. You will be shown the available commands. Type `startScan` and press enter to start scanning for buttons. Then press your flic button (and make sure it is disconnected to any other devices such as a smartphone) and you should see it appear. Type `stopScan` and press enter to stop scanning (it's ok if output text are interleaved with what you type). Hold your Flic button for 7 seconds to make it public, and make sure that it glows red. Then enter the command connect `<BDADDR> <id>` where `<BDADDR>` is the address that appeared during scan. For `<id>`, put any integer that will be used later to refer to this connection. The button should now connect and you will see click events appear. Type `disconnect <id>` to later disconnect.
 
