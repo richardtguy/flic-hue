@@ -50,6 +50,12 @@ bridge = Bridge(BRIDGE_IP, username)
 lights = bridge.lights
 print (lights.url)
 
+# create a dictionary of light names and ids
+light_ids = {}
+all_lights = lights()
+for l in all_lights.keys():
+	light_ids[all_lights[l]['name']] = l
+
 # load button groups from file
 with open('groups') as f:
 	json_data = f.read()
@@ -61,13 +67,16 @@ client = fliclib.FlicClient("localhost")
 def click_handler(channel, click_type, was_queued, time_diff):
 	print(channel.bd_addr + " " + str(click_type))
 	if str(click_type) == 'ClickType.ButtonSingleClick':
-		print ("Switching on associated lights... " + str(groups[channel.bd_addr]['group']))
-		for l in groups[channel.bd_addr]['group']:
-			s = bridge.lights[l].state
-			s(on=True)
+		try:
+			print ("> Switching on associated lights... " + str(groups[channel.bd_addr]['group']))
+			for l in groups[channel.bd_addr]['group']:
+				s = bridge.lights[light_ids[l]].state
+				s(on=True)
+		except KeyError:
+			print ("> Failed finding lights associated with button " + str(channel.bd_addr))
 	elif str(click_type) == 'ClickType.ButtonHold':
 		# turn off all lights
-		print ("Turning off all lights...")
+		print ("> Turning off all lights...")
 		for l in lights():
 			s = bridge.lights[l].state
 			s(on=False)

@@ -1,9 +1,17 @@
 {
     "80:e4:da:71:36:f6": {
         "group": [
-            4,
-            5,
-            6
+            "Dining table",
+            "Hall 1",
+            "Hall 2"
+        ]
+    },
+    "80:e4:da:71:85:af": {
+        "group": [
+            "Lounge floor lamp",
+            "Lounge table lamp",
+            "1st Floor Hall 1",
+            "1st Floor Hall 2"
         ]
     }
 }
