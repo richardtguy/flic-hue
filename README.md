@@ -1,10 +1,12 @@
-*Overview
+# flic-hue
+Use flic Bluetooth buttons to control Philips hue lights via a Raspberry Pi 3.
+
+## Overview
 - This application enables flic bluetooth LE buttons to be used to control Philips hue smart lights via a Raspberry Pi 3 running Rasbian.
 
 - Verified buttons communicates with the Bluetooth controller on the Raspberry Pi via a server application which serves click events to a client application.  The client queries the hue bridge API to switch lights on or off depending on the click type (single click or hold).  Buttons are associated with groups of lights as defined in a JSON formatted file.
 
-*Instructions
-
+## Instructions
 - In one terminal, start flic server (as root)
 `cd server`
 `sudo ./flicd -f flic.sqlite3`
@@ -28,7 +30,7 @@
 }
 ```
 
-*References
+## References
 flic button server & client libraries: `https://github.com/50ButtonsEach/fliclib-linux-hci`
 Philips hue API: `http://www.developers.meethue.com/philips-hue-api`
 Python library for Philips hue: `https://github.com/quentinsf/qhue`
