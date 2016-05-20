@@ -31,7 +31,7 @@ sudo ./flicd -f flic.sqlite3
 ```
 
 ##References
-flic button server & client libraries: [https://github.com/50ButtonsEach/fliclib-linux-hci](https://github.com/50ButtonsEach/fliclib-linux-hci)
-Philips hue API: [http://www.developers.meethue.com/philips-hue-api](http://www.developers.meethue.com/philips-hue-api)
-Python library for Philips hue: [https://github.com/quentinsf/qhue](https://github.com/quentinsf/qhue)
+- flic button server & client libraries: [https://github.com/50ButtonsEach/fliclib-linux-hci](https://github.com/50ButtonsEach/fliclib-linux-hci)
+- Philips hue API: [http://www.developers.meethue.com/philips-hue-api](http://www.developers.meethue.com/philips-hue-api)
+- Python library for Philips hue: [https://github.com/quentinsf/qhue](https://github.com/quentinsf/qhue)
 
