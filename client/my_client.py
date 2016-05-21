@@ -44,7 +44,7 @@ def click_handler(channel, click_type, was_queued, time_diff):
 			for l in groups[channel.bd_addr]['group']:
 				lights[l].on()
 		except KeyError:
-			print ("> Failed finding lights associated with button " + str(channel.bd_addr))
+			print ("> Error finding lights associated with button " + str(channel.bd_addr))
 	elif str(click_type) == 'ClickType.ButtonHold':
 		# turn off all lights
 		print ("> Turning off all lights...")
