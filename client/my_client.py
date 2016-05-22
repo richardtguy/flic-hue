@@ -9,7 +9,7 @@
 # import libraries
 import json
 import fliclib
-from hue import init_hue_lights, HueLight
+from hue import init_hue_lights, HueLight, HueBridge
 from os import path
 
 CRED_FILE_PATH = 'hue_username'
@@ -26,7 +26,7 @@ else:
 		print ('username: ' + username)
 
 # initialise lights
-lights = init_hue_lights(username, BRIDGE_IP)
+bridge = HueBridge(username, BRIDGE_IP)
 
 # load button groups from file
 with open('groups') as f:
@@ -41,15 +41,15 @@ def click_handler(channel, click_type, was_queued, time_diff):
 	if str(click_type) == 'ClickType.ButtonSingleClick':
 		try:
 			print ("> Switching on associated lights... " + str(groups[channel.bd_addr]['group']))
-			for l in groups[channel.bd_addr]['group']:
-				lights[l].on()
+			for light in groups[channel.bd_addr]['group']:
+				bridge.get(light).on()
 		except KeyError:
 			print ("> Error finding lights associated with button " + str(channel.bd_addr))
 	elif str(click_type) == 'ClickType.ButtonHold':
 		# turn off all lights
 		print ("> Turning off all lights...")
-		for l in lights:
-			lights[l].off()
+		for light in bridge:
+			light.off()
 	return
 
 def got_button(bd_addr):

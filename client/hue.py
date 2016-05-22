@@ -1,8 +1,51 @@
 import requests, json
 
+class HueBridge():
+	"""
+	Implement a simplified API for a Philips hue bridge.
+	Iterating over HueBridge returns each HueLight object
+	"""
+
+	def __init__(self, username, IP):
+		"""
+		Query hue bridge using given username and IP address to get list
+		of lights. Create a dictionary containing HueLight object for
+		each light, with names as keys
+		"""
+		url = 'http://'+IP+'/api/'+username+'/lights'
+		r = requests.get(url).json()
+	
+		self.lights = {}	
+		for light_id in r:
+			name = (r[light_id]['name'])
+			self.lights[name] = HueLight(name,light_id)
+
+		# set username and IP address for all HueLight objects
+		HueLight.username = username
+		HueLight.IP = IP
+			
+	def __iter__(self):
+		# create a list of HueLight objects to iterate over by index
+		self.lights_list = list(self.lights.values())
+		self.num_lights = len(self.lights_list)
+		self.counter = -1
+		return self
+	
+	def __next__(self):
+		self.counter = self.counter + 1
+		if self.counter == self.num_lights:
+			raise StopIteration
+		return self.lights_list[self.counter]
+	
+	def get(self, name):
+		"""
+		Return named HueLight object
+		"""
+		return self.lights[name]
+		
 class HueLight():
 	"""
-	Implements a simplified API for a Philips hue light
+	Implement a simplified API for a Philips hue light
 	"""
 	username = ''
 	IP = ''
@@ -13,13 +56,13 @@ class HueLight():
 		
 	def get_name(self):
 		"""
-		Returns the name of the light
+		Return the name of the light
 		"""
 		return self.name
 		
 	def on(self):
 		"""
-		Switches the light on
+		Switch the light on
 		"""
 		self.__on_or_off('on')
 	
@@ -42,23 +85,3 @@ class HueLight():
 		else:
 			print ('failed')
 		return r.json()
-
-def init_hue_lights(username, IP):
-	"""
-	Returns a dictionary of HueLight objects with light names as keys
-	"""
-	
-	url = 'http://'+IP+'/api/'+username+'/lights'
-	r = requests.get(url).json()
-	
-	lights = {}	
-	for id in r:
-		name = (r[id]['name'])
-		lights[name] = HueLight(name,id)
-
-	HueLight.username = username
-	HueLight.IP = IP
-	
-	return lights
-	
-
