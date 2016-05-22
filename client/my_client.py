@@ -9,7 +9,7 @@
 # import libraries
 import json
 import fliclib
-from hue import init_hue_lights, HueLight, HueBridge
+import hue
 from os import path
 
 CRED_FILE_PATH = 'hue_username'
@@ -26,7 +26,7 @@ else:
 		print ('username: ' + username)
 
 # initialise lights
-bridge = HueBridge(username, BRIDGE_IP)
+bridge = hue.HueBridge(username, BRIDGE_IP)
 
 # load button groups from file
 with open('groups') as f:
