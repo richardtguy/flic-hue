@@ -17,7 +17,7 @@ sudo ./flicd -f flic.sqlite3
 
 - Press and hold any button to switch off all lights
 
-- To turn on a group of lights when a button is single-clicked, add the button and a list of light names to the 'groups' file.  Light names can be obtained by querying the /lights resource on the hue bridge, or are visible on the hue smartphone app.
+- To turn on a group of lights when a button is single-clicked, add the button address and a list of light names to the 'groups' file.  Light names can be obtained by querying the /lights resource on the hue bridge, or are visible on the hue smartphone app.
 ```
 {
     "80:e4:da:71:36:f6": {
