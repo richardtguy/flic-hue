@@ -86,5 +86,5 @@ class HueLight():
 		if r.status_code == 200:
 			HueBridge.log.success(self.name + ' ' + operation)
 		else:
-			print ('failed')
+			HueBridge.log.err(self.name + ' ' + operation)
 		return r.json()
