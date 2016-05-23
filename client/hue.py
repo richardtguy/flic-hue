@@ -1,10 +1,14 @@
 import requests, json
+import log
 
 class HueBridge():
 	"""
 	Implement a simplified API for a Philips hue bridge.
 	Iterating over HueBridge returns each HueLight object
 	"""
+
+	# set up log
+	log = log.TerminalLog()
 
 	def __init__(self, username, IP):
 		"""
@@ -23,7 +27,7 @@ class HueBridge():
 		# set username and IP address for all HueLight objects
 		HueLight.username = username
 		HueLight.IP = IP
-			
+					
 	def __iter__(self):
 		# create a list of HueLight objects to iterate over by index
 		self.lights_list = list(self.lights.values())
@@ -73,7 +77,6 @@ class HueLight():
 		self.__on_or_off('off')
 		
 	def __on_or_off(self, operation):
-		print (self.name, end='... ')
 		url = 'http://'+self.IP+'/api/'+self.username+'/lights/'+self.ID+'/state'
 		if operation == 'on':
 			payload = '{"on": true}'
@@ -81,7 +84,7 @@ class HueLight():
 			payload = '{"on": false}'
 		r = requests.put(url, data=payload)
 		if r.status_code == 200:
-			print (operation)
+			HueBridge.log.success(self.name + ' ' + operation)
 		else:
 			print ('failed')
 		return r.json()

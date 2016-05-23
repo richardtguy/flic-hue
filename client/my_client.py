@@ -10,20 +10,24 @@
 import json
 import fliclib
 import hue
+import log
 from os import path
 
 CRED_FILE_PATH = 'hue_username'
 BRIDGE_IP = '192.168.1.1'
 
+# set up log
+log = log.TerminalLog()
+
 # read username from credential file
 if not path.exists(CRED_FILE_PATH):
-	print ('No credential file found!')
+	log.err('No credential file found!')
 	
 else:
-	print ('Getting username from file...')
+	log.info('Getting username from file...')
 	with open(CRED_FILE_PATH, "r") as cred_file:
 		username = cred_file.read()
-		print ('username: ' + username)
+		log.success('username: ' + username)
 
 # initialise lights
 bridge = hue.HueBridge(username, BRIDGE_IP)
@@ -37,17 +41,17 @@ groups = json.loads(json_data)
 client = fliclib.FlicClient("localhost")
 
 def click_handler(channel, click_type, was_queued, time_diff):
-	print(channel.bd_addr + " " + str(click_type))
+	log.info(channel.bd_addr + " " + str(click_type))
 	if str(click_type) == 'ClickType.ButtonSingleClick':
 		try:
-			print ("> Switching on associated lights... " + str(groups[channel.bd_addr]['group']))
+			log.info("Switching on lights associated with button " + channel.bd_addr)
 			for light in groups[channel.bd_addr]['group']:
 				bridge.get(light).on()
 		except KeyError:
-			print ("> Error finding lights associated with button " + str(channel.bd_addr))
+			log.warning("Light not found for button " + str(channel.bd_addr))
 	elif str(click_type) == 'ClickType.ButtonHold':
 		# turn off all lights
-		print ("> Turning off all lights...")
+		log.info("Turning off all lights...")
 		for light in bridge:
 			light.off()
 	return
@@ -58,11 +62,11 @@ def got_button(bd_addr):
 	cc.on_button_single_or_double_click_or_hold = click_handler
 	cc.on_connection_status_changed = \
 		lambda channel, connection_status, disconnect_reason: \
-			print(channel.bd_addr + " " + str(connection_status) + (" " + str(disconnect_reason) if connection_status == fliclib.ConnectionStatus.Disconnected else ""))
+			log.info(channel.bd_addr + " " + str(connection_status) + (" " + str(disconnect_reason) if connection_status == fliclib.ConnectionStatus.Disconnected else ""))
 	client.add_connection_channel(cc)
 
 def got_info(items):
-	print(items)
+	log.info(items)
 	for bd_addr in items["bd_addr_of_verified_buttons"]:
 		got_button(bd_addr)
 
