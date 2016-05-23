@@ -24,10 +24,10 @@ if not path.exists(CRED_FILE_PATH):
 	log.err('No credential file found!')
 	
 else:
-	log.info('Getting username from file...')
+	log.info('Setting up interface to hue bridge')
 	with open(CRED_FILE_PATH, "r") as cred_file:
 		username = cred_file.read()
-		log.success('username: ' + username)
+		log.success('hue username: ' + username)
 
 # initialise lights
 bridge = hue.HueBridge(username, BRIDGE_IP)
@@ -66,8 +66,9 @@ def got_button(bd_addr):
 	client.add_connection_channel(cc)
 
 def got_info(items):
-	log.info(items)
+	log.info('Checking verified flic buttons')
 	for bd_addr in items["bd_addr_of_verified_buttons"]:
+		log.success(bd_addr)
 		got_button(bd_addr)
 
 client.get_info(got_info)

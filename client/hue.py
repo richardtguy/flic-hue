@@ -17,7 +17,12 @@ class HueBridge():
 		each light, with names as keys
 		"""
 		url = 'http://'+IP+'/api/'+username+'/lights'
-		r = requests.get(url).json()
+		r = requests.get(url)
+		if r.status_code == 200:
+			HueBridge.log.success('hue bridge ready')
+		else:
+			HueBridge.log.err('Could not contact hue bridge')
+		r = r.json()
 	
 		self.lights = {}	
 		for light_id in r:
